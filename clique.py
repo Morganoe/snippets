@@ -12,7 +12,6 @@
 class Graph(object):
     def __init__(self):
         self.adj = dict()
-        self.nodes = list()
 
     def __str__(self):
         s = "{\n"
@@ -32,6 +31,9 @@ class Graph(object):
         return str(s)
 
     def add_edge(self, a, b):
+        '''
+            Creates an undirected edge between nodes a and b.
+        '''
         if a not in self.adj:
             self.adj[a] = [b]
         else:
@@ -42,14 +44,12 @@ class Graph(object):
         else:
             self.adj[b].append(a)
 
-        if a not in self.nodes:
-            self.nodes.append(a)
-
-        if b not in self.nodes:
-            self.nodes.append(b)
 
 # Find all 3-cycles in graph
 def find_3cycles(G):
+    '''
+        Finds and returns a generator of all 3-cycles in G.
+    '''
     visited = set()
     for a in G.adj:
         for b in G.adj[a]:
@@ -63,6 +63,10 @@ def find_3cycles(G):
         visited.add(a)
     
 def remove_duplicates(a):
+    '''
+        Removes duplicate set elements from list, returning
+        a generator in its place.
+    '''
     seen = list()
     for x in a:
         if x not in seen:
@@ -71,6 +75,9 @@ def remove_duplicates(a):
 
 import copy
 def is_clique(G, clique):
+    '''
+        Verifies that clique is actually a clique in G.
+    '''
     for i in clique:
         edges = copy.deepcopy(clique)
         edges.remove(i)
@@ -81,6 +88,11 @@ def is_clique(G, clique):
 
 
 def find_cliques(G):
+    '''
+        Given a graph G, exhaustively finds all k-cliques for
+        all k > 2.  Generates duplicates, but removes them
+        before returning them.
+    '''
     C = list(remove_duplicates(list(find_3cycles(G))))
     ret = list()
     q = list()
@@ -106,7 +118,11 @@ def find_cliques(G):
 
 
 def print_cliques(c):
-    s = "[\n"
+    '''
+        Nicely prints out all cliques found and stored in c.
+    '''
+    s = "Cliques found:\n"
+    s += "[\n"
     for i in c:
         s += "  "
         s += str(i)
@@ -128,5 +144,7 @@ g.add_edge(4,5)
 g.add_edge(5,6)
 g.add_edge(5,7)
 g.add_edge(6,7)
+print("Using graph: ")
+print(g)
 cliques = find_cliques(g)
 print_cliques(cliques)
