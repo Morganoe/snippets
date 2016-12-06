@@ -97,6 +97,11 @@ def find_cliques(G):
     ret = list()
     q = list()
     visited = list()
+
+    for node in G.adj:
+        for edge in G.adj[node]:
+            ret.append([node, edge])
+
     for cycle in C:
         ret.append(cycle)
         for node in cycle:
@@ -158,5 +163,11 @@ g.add_edge(4,5)
 #g.add_edge(6,7)
 print("Using graph: ")
 print(g)
+
+import time
+start = time.time()
 cliques = find_cliques(g)
+end = time.time()
+
 print_cliques(cliques)
+print("Time to find cliques: {}".format(end - start))
